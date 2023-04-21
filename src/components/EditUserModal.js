@@ -1,11 +1,14 @@
 import { useFormik } from 'formik'
-import React from 'react'
-import { useDispatch } from 'react-redux'
-import { createSingleUserAction } from '../action/userSagaActions';
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { editSingleUserAction } from '../action/userActions';
 
-function CreateModal() {
+function EditModal() {
 
     const dispatch = useDispatch();
+
+    const { editUser } = useSelector(state => state.userReducer);
+    const { value, index } = editUser;
 
     const formik = useFormik({
         initialValues: {
@@ -22,7 +25,7 @@ function CreateModal() {
                 error.name = "Please enter a name";
             }
 
-            if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(values.email)){
+            if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(values.email)) {
                 error.email = "Please enter a valid email";
             }
 
@@ -42,23 +45,25 @@ function CreateModal() {
                 error.phone = "Please enter a phone";
             }
 
-            if (values.phone.length < 10) {
-                error.phone = "Please enter a valid phone";
-            }
-
             return error
         },
         onSubmit: (values) => {
-            dispatch(createSingleUserAction(values));
+            dispatch(editSingleUserAction(values, index));
         }
     });
-    
+
+    useEffect(() => {
+        if (!(value == null)) {
+            formik.setValues(value)
+        }
+    }, [value]);
+
     return (
-        <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Create User</h1>
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Edit User</h1>
                         <button type="button" class="btn-close" onClick={formik.resetForm} data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form onSubmit={formik.handleSubmit}>
@@ -84,7 +89,7 @@ function CreateModal() {
 
                             <label for="gender" className='m-2'>GENDER</label>
                             <select className='form-control' name='gender' value={formik.values.gender} onChange={formik.handleChange} onBlur={formik.handleBlur}>
-                                <option >Select a gender...</option>
+                                <option>Select a gender...</option>
                                 <option>Male</option>
                                 <option>Female</option>
                             </select>
@@ -101,7 +106,7 @@ function CreateModal() {
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <input type="submit" value="Submit" class="btn btn-success" data-bs-dismiss="modal"/>
+                            <input type="submit" value="Submit" class="btn btn-success" data-bs-dismiss="modal" />
                         </div>
                     </form>
                 </div>
@@ -110,4 +115,4 @@ function CreateModal() {
     )
 }
 
-export default CreateModal
+export default EditModal

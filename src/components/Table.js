@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteData, edit, fetchData, view } from '../action';
 import Header from './Header';
-import { deleteSingleUserAction, fetchAllAction, fetchSingleUserAction, setEditUser } from '../action/userSagaActions';
+import { deleteSingleUserAction, fetchAllAction, fetchSingleUserAction, setEditUser } from '../action/userActions';
 
 function Table() {
 
@@ -12,8 +11,7 @@ function Table() {
         dispatch(fetchAllAction());
     }, [])
 
-    const { allUser } = useSelector(state => state.userReducer);
-
+    const { searchResult } = useSelector(state => state.userReducer);
 
     /* value selected from getData (without saga) */
     // const {allUser} = useSelector(state => state.getData);
@@ -23,7 +21,7 @@ function Table() {
             <Header />
             <tbody>
                 {
-                    allUser.map((value, index) => {
+                    searchResult.map((value, index) => {
                         return <tr key={index}>
                             <td>{value.name}</td>
                             <td>{value.email}</td>

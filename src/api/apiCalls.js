@@ -16,8 +16,8 @@ export async function createUser(values) {
     return users
 }
 
-export async function editUser({id,values}) {
-    const users = await axios.put(`${config.api}/${id}`,values);
+export async function editUser(values) {
+    const users = await axios.put(`${config.api}/${values.id}`,values);
     return users
 }
 

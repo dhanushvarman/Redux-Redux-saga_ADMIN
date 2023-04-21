@@ -1,5 +1,6 @@
 const obj = {
     allUser: [],
+    searchResult:[],
     viewUser: {},
     editUser: {},
     error: ""
@@ -12,7 +13,7 @@ export default function userReducer(state = obj, action) {
         case "SEARCH":
             return {
                 ...state,
-                allUser: state.allUser.filter((value) => value.name.includes(action.payload))
+                searchResult: state.searchResult.length == 0 ? state.allUser : state.allUser.filter((value) => value.name.includes(action.payload))
             }
 
         //Setting user data in edit form
@@ -26,7 +27,8 @@ export default function userReducer(state = obj, action) {
         case "USERS_LOAD_SUCCESS":
             return {
                 ...state,
-                allUser: action.payload
+                allUser: action.payload,
+                searchResult : action.payload
             }
         case "USERS_LOAD_FAIL":
             return {

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useDispatch } from 'react-redux';
-import { search } from '../action/userSagaActions';
+import { search } from '../action/userActions';
 
 function SearchBox() {
     
